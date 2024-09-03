@@ -1,0 +1,12 @@
+-- Example SQL queries for Amazon Athena
+
+-- Query to get the latest stock prices
+SELECT symbol, price, timestamp
+FROM your_table
+WHERE timestamp >= current_date - interval '1' day
+ORDER BY timestamp DESC;
+
+-- Query to analyze stock price trends
+SELECT symbol, AVG(price) AS average_price
+FROM your_table
+GROUP BY symbol;
