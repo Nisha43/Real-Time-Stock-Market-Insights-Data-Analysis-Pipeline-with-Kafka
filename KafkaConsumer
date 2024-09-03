@@ -1,0 +1,30 @@
+from confluent_kafka import Consumer
+import json
+
+# Kafka configuration
+conf = {
+    'bootstrap.servers': 'localhost:9092',
+    'group.id': 'stock_group',
+    'auto.offset.reset': 'earliest'
+}
+
+consumer = Consumer(conf)
+consumer.subscribe(['stock_topic'])
+
+def process_message(message):
+    data = json.loads(message.value().decode('utf-8'))
+    # Process the data (e.g., store in S3)
+    print(data)
+
+def main():
+    while True:
+        msg = consumer.poll(timeout=1.0)
+        if msg is None:
+            continue
+        if msg.error():
+            print(f"Consumer error: {msg.error()}")
+            continue
+        process_message(msg)
+
+if __name__ == '__main__':
+    main()
