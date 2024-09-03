@@ -34,5 +34,17 @@ def create_catalog():
             'StorageDescriptor': {
                 'Columns': [
                     {'Name': 'symbol', 'Type': 'string'},
-                    {'Name': 'price', 'Type': 'double'},
-                    # Add more columns as needed
+                    {'Name': 'price', 'Type': 'double'},                 ],
+                'Location': 's3://your-bucket/your-prefix/',
+                'InputFormat': 'org.apache.hadoop.mapred.TextInputFormat',
+                'OutputFormat': 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+            },
+            'TableType': 'EXTERNAL_TABLE'
+        }
+    )
+    print(response)
+
+if __name__ == '__main__':
+    create_catalog()
+
+
