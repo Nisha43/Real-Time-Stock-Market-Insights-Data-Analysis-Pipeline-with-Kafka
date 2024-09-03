@@ -1,0 +1,38 @@
+#aws/glue_jobs/transform_job.py
+
+import boto3
+import sys
+from awsglue.utils import getResolvedOptions
+
+args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+
+glue_client = boto3.client('glue')
+
+def run_job():
+    response = glue_client.start_job_run(JobName='your-transform-job')
+    print(response)
+
+if __name__ == '__main__':
+    run_job()
+
+
+
+#aws/glue_jobs/catalog_job.py
+import boto3
+import sys
+from awsglue.utils import getResolvedOptions
+
+args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+
+glue_client = boto3.client('glue')
+
+def create_catalog():
+    response = glue_client.create_table(
+        DatabaseName='your_database',
+        TableInput={
+            'Name': 'your_table',
+            'StorageDescriptor': {
+                'Columns': [
+                    {'Name': 'symbol', 'Type': 'string'},
+                    {'Name': 'price', 'Type': 'double'},
+                    # Add more columns as needed
