@@ -1,0 +1,30 @@
+from confluent_kafka import Producer
+import json
+import requests
+
+# Kafka configuration
+conf = {
+    'bootstrap.servers': 'localhost:9092',  # Update with your Kafka broker address
+}
+
+producer = Producer(conf)
+
+def delivery_report(err, msg):
+    if err is not None:
+        print(f"Message delivery failed: {err}")
+    else:
+        print(f"Message delivered to {msg.topic()} [{msg.partition()}]")
+
+def fetch_stock_data():
+    # Replace with actual stock market data source
+    response = requests.get('https://api.example.com/stocks')
+    return response.json()
+
+def main():
+    stock_data = fetch_stock_data()
+    for record in stock_data:
+        producer.produce('stock_topic', key=str(record['symbol']), value=json.dumps(record), callback=delivery_report)
+    producer.flush()
+
+if __name__ == '__main__':
+    main()
