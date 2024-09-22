@@ -16,8 +16,6 @@ if __name__ == '__main__':
     run_job()
 
 
-
-#aws/glue_jobs/catalog_job.py
 import boto3
 import sys
 from awsglue.utils import getResolvedOptions
